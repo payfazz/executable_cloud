@@ -41,11 +41,11 @@ public class Cloud extends hudson.slaves.Cloud {
     }
 
     @Override
-    public boolean canProvision(Label alabel) {
-        if (alabel == null) {
+    public boolean canProvision(Label paramLabel) {
+        if (paramLabel == null) {
             return false;
         }
-        return alabel.matches(Label.parse(label));
+        return paramLabel.matches(Label.parse(label));
     }
 
     @Override
@@ -176,7 +176,7 @@ public class Cloud extends hudson.slaves.Cloud {
                             throw new AbortException();
                         }
 
-                        // wait till online (have channel)
+                        // wait till online
                         for (;;) {
                             Thread.sleep(3000);
                             SlaveComputer c = slave.getComputer();
@@ -231,7 +231,6 @@ public class Cloud extends hudson.slaves.Cloud {
             String[] allLabel = label.split(" ");
             int count = 0;
             for (String l : allLabel) {
-                l = l.trim();
                 if (l.length() == 0) {
                     continue;
                 }

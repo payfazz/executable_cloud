@@ -1,4 +1,9 @@
 <?jelly escape-by-default="true"?>
 <div>
-    Manage Cloud using arbitary executable program
+    <div>
+        Manage Cloud using arbitary executable program
+    </div>
+    <div>
+        Every agent created using this cloud is not configurable and will be removed after 10 minute idle/disconnected
+    </div>
 </div>
