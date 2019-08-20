@@ -129,50 +129,53 @@ public class Cloud extends hudson.slaves.Cloud {
                             }
                         }
 
-                        Process process = processBuilder.start();
-                        LOGGER.log(Level.INFO, "'spawn' process created: " + process.toString());
-
-                        JSONObject spawnInput = new JSONObject();
-                        spawnInput.put("action", "spawn");
-                        spawnInput.put("node", nodeInfo);
-
-                        Future<String> stderrString = Utils.stderrString(process);
-                        JSONObject spawnOutput = null;
                         try {
-                            spawnOutput = Utils.comunicate(process, spawnInput).get(7, TimeUnit.MINUTES);
-                        } catch (Exception e) {
-                        }
+                            Process process = processBuilder.start();
+                            LOGGER.log(Level.INFO, "'spawn' process created: " + process.toString());
 
-                        if (!process.waitFor(1, TimeUnit.SECONDS)) {
-                            LOGGER.log(Level.INFO,
-                                    "killing 'spawn' process, because of timeout: " + process.toString());
-                            process.destroyForcibly();
-                            Thread.sleep(1000);
-                        }
+                            JSONObject spawnInput = new JSONObject();
+                            spawnInput.put("action", "spawn");
+                            spawnInput.put("node", nodeInfo);
 
-                        if (process.exitValue() != 0) {
-                            String stderr = "";
+                            Future<String> stderrString = Utils.stderrString(process);
+                            JSONObject spawnOutput = null;
                             try {
-                                stderr = stderrString.get(1, TimeUnit.SECONDS);
+                                spawnOutput = Utils.comunicate(process, spawnInput).get(7, TimeUnit.MINUTES);
                             } catch (Exception e) {
                             }
-                            throw new Exception(
-                                    "'spawn' process exit with code=" + process.exitValue() + "\n" + stderr);
-                        }
 
-                        if (spawnOutput == null) {
-                            throw new Exception("Invalid JSONObject from 'spawn' process");
-                        }
+                            if (!process.waitFor(1, TimeUnit.SECONDS)) {
+                                LOGGER.log(Level.INFO,
+                                        "killing 'spawn' process, because of timeout: " + process.toString());
+                                process.destroyForcibly();
+                                Thread.sleep(1000);
+                            }
 
-                        if (!spawnOutput.optString("action", "").equals("spawn")) {
-                            LOGGER.log(Level.WARNING, "Invalid 'action' from 'spawn' process");
+                            if (process.exitValue() != 0) {
+                                String stderr = "";
+                                try {
+                                    stderr = stderrString.get(1, TimeUnit.SECONDS);
+                                } catch (Exception e) {
+                                }
+                                throw new Exception(
+                                        "'spawn' process exit with code=" + process.exitValue() + "\n" + stderr);
+                            }
+
+                            if (spawnOutput == null) {
+                                throw new Exception("Invalid JSONObject from 'spawn' process");
+                            }
+
+                            if (!spawnOutput.optString("action", "").equals("spawn")) {
+                                throw new Exception("Invalid 'action' from 'spawn' process");
+                            }
+
+                            if (!spawnOutput.optBoolean("spawned", false)) {
+                                throw new AbortException("'spawn' process reject spaning new node");
+                            }
+
+                        } catch (Exception e) {
                             Jenkins.get().removeNode(slave);
-                            throw new AbortException();
-                        }
-
-                        if (!spawnOutput.optBoolean("spawned", false)) {
-                            LOGGER.log(Level.WARNING, "'spawn' process reject spaning new node");
-                            Jenkins.get().removeNode(slave);
+                            LOGGER.log(Level.WARNING, e.getMessage(), e);
                             throw new AbortException();
                         }
 
