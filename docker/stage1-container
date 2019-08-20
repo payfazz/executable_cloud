@@ -1,0 +1,12 @@
+#!/usr/bin/env docker.sh
+
+image=$name
+skip_real_pull=y
+opts="
+  --rm
+  -v '$name-home:/root'
+"
+
+command_rmvol() {
+  docker volume rm "$name-home" > /dev/null
+}

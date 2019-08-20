@@ -1,0 +1,68 @@
+#!/bin/sh
+
+set -eu
+cd "$(dirname "$0")"
+
+panic() {
+  [ $# -gt 0 ] && echo "[ERR] >>" "$@" >&2 || :
+  exit 1
+}
+
+info() {
+  echo "[INF] >>" "$@"
+}
+
+docker_pull_opt=--pull
+[ -n "${DOCKER_NO_PULL:-}" ] && docker_pull_opt= || :
+
+docker_cache_opt=
+[ -n "${DOCKER_NO_CACHE:-}" ] && docker_cache_opt=--no-cache || :
+
+alias docker_sync="rsync -e 'docker exec -i' --blocking-io"
+stage1=./stage1-container
+stage1_name=$("$stage1" name)
+
+info "build stage1"
+(
+  docker build $docker_pull_opt $docker_cache_opt -t "$("$stage1" image)" -f Dockerfile-builder .
+)
+
+info "start stage1"
+(
+  "$stage1" start
+  "$stage1" update -n
+)
+
+info "copy m2 settings"
+(
+  "$stage1" exec mkdir -p "/root/.m2"
+  docker_sync -aIc --delete m2_settings.xml "${stage1_name}:/root/.m2/settings.xml"
+)
+
+info "copy src to stage1"
+(
+  "$stage1" exec mkdir -p /builder/src
+  docker_sync \
+    --exclude="/.git/" \
+    --exclude="/docker/" \
+    -aIc --delete \
+    ../ "${stage1_name}:/builder/src/"
+)
+
+info "build inside stage1"
+(
+  "$stage1" exec sh -ceu "
+    cd /builder/src
+    mvn package
+  "
+)
+
+info "copy out result"
+(
+  docker_sync -aIc "${stage1_name}:/builder/src/target/executablecloud.hpi" ../executablecloud.hpi
+)
+
+info "stop stage1"
+(
+  "$stage1" stop
+)
