@@ -1,0 +1,14 @@
+github.com/aws/aws-sdk-go v1.23.4 h1:F6f/iQRhuSfrpUdy80q29898H0NYN27pX+95tkJ+BIY=
+github.com/aws/aws-sdk-go v1.23.4/go.mod h1:KmX6BPdI08NWTb3/sm4ZGu5ShLoqVDhKgpiN924inxo=
+github.com/jmespath/go-jmespath v0.0.0-20180206201540-c2b33e8439af h1:pmfjZENx5imkbgOkpRUYLnmbU7UEFbjtDA2hxJ1ichM=
+github.com/jmespath/go-jmespath v0.0.0-20180206201540-c2b33e8439af/go.mod h1:Nht3zPeWKUH0NzdCt2Blrr5ys8VGpn0CEB0cQHVjt7k=
+github.com/payfazz/go-errors v0.0.0-20190724085815-71b77ca0f6f6 h1:6PWWN4R+cgzD4e0HJc8m4T4RUVLbD9CCl2tTzgLJ2TU=
+github.com/payfazz/go-errors v0.0.0-20190724085815-71b77ca0f6f6/go.mod h1:r3pZyLA1i/ujbAQGUqIkx7/kRE8YIWyv9fwldSdEHBQ=
+github.com/payfazz/go-middleware v0.0.0-20190724100055-2ef25bcd2c13 h1:wC1HW3Go+0Fug8xG29Mi2NTefS+kQjEmTAMEc0eQOQk=
+github.com/payfazz/go-middleware v0.0.0-20190724100055-2ef25bcd2c13/go.mod h1:pGgGdE8OMjA0auJIXfMtJxSdiix2m8uA9P/fbGGwosE=
+github.com/payfazz/go-oneliner v0.0.0-20190714093643-d3218d89c354 h1:XO38lqKtwF8YNOpHElo/qd/hN+p0SR3uRYj6Ky5JxVQ=
+github.com/payfazz/go-oneliner v0.0.0-20190714093643-d3218d89c354/go.mod h1:ZSb9i6cykubVVdDSE6uD07rL6TGUIqnzGFbN5MO+A5I=
+github.com/payfazz/mainutil v0.0.0-20190724100452-b2821b8f1fce h1:Cl4s2XXpB/hMWRXXnoBdGcHt8oSMK424tcLRLWbnrb4=
+github.com/payfazz/mainutil v0.0.0-20190724100452-b2821b8f1fce/go.mod h1:O+ldxHW34RdAxWyUUfFpD7H02uuvCC0dkEb3MaSt7Ao=
+github.com/payfazz/stdlog v0.0.0-20190715192008-3663b9d0f4e7 h1:m4ZfnceCTTKJ4TZZcTbyMhGXI7TrkYWsxsHk+Gg+h0w=
+github.com/payfazz/stdlog v0.0.0-20190715192008-3663b9d0f4e7/go.mod h1:QJxSm412zqFKWPSLOVwU/vJIaVUEpBdUAg0LfvcXQ6M=
