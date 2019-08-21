@@ -69,7 +69,7 @@ func doSpawn(spawn spawn) {
 	userDataYaml = strings.ReplaceAll(userDataYaml, "SECRET_PLACEHOLDER_85fe867240ecd591b79034a07b0a8a1b", spawn.Node.JnlpMac)
 
 	var userDataBuffer bytes.Buffer
-	coreOsCt := exec.Command("./coreos-ct")
+	coreOsCt := exec.Command("./coreos-ct") // this is from https://github.com/coreos/container-linux-config-transpiler/releases/download/v0.9.0/ct-v0.9.0-x86_64-unknown-linux-gnu
 	coreOsCt.Stdin = bytes.NewReader([]byte(userDataYaml))
 	coreOsCt.Stdout = &userDataBuffer
 	errhandler.Check(coreOsCt.Run())
